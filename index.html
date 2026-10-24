@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🔥ZINMAKU CHOICE🔥</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ZINMAKU CHOICE">
+    <meta name="mobile-web-app-capable" content="yes">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background: #090b10;
+            color: #e5e7eb;
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: #111318;
+            border: 1px solid #30343b;
+            border-radius: 16px;
+            padding: 25px;
+            box-sizing: border-box;
+            box-shadow: 0 12px 35px rgba(0,0,0,.35);
+            margin: 15px;
+        }
+
+        /* 1. 表題 */
+        h1 {
+            font-size: 1.8rem;
+            margin-top: 0;
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: none;
+            color: #fff;
+            letter-spacing: 2px;
+        }
+
+        /* 2. 結果表示エリア */
+        .result-card {
+            background: #171a20;
+            border: 1px solid #30343b;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 25px;
+            min-height: 100px;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .result-title {
+            font-size: 0.8rem;
+            color: #a7f3d0;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .result-display {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        /* 買い目点数表示 */
+        .bet-count-display {
+            font-size: 0.85rem;
+            color: #fb7185;
+            text-shadow: 0 0 8px rgba(255, 0, 85, 0.6);
+            margin-top: 8px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .result-numbers {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .num-badge {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #fff;
+            color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+        }
+
+        .num-badge.jiku {
+            background: #e11d48;
+            color: #fff;
+            box-shadow: none;
+        }
+
+        .num-badge.hiyo {
+            background: #e5e7eb;
+            color: #000;
+            box-shadow: none;
+        }
+
+        .arrow {
+            font-size: 1.3rem;
+            color: #cbd5e1;
+        }
+
+        .jiku-separator {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fb7185;
+            text-shadow: 0 0 8px #ff0055;
+        }
+
+        /* 共通設定フォーム */
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .ticket-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ticket-select-wrap {
+            flex: 1;
+            min-width: 0; /* フレックスアイテムの縮小を許可 */
+        }
+
+        /* マルチチェックボックス */
+        .multi-checkbox-wrap {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            user-select: none;
+            padding: 0 12px;
+            background: rgba(16, 28, 48, 0.4);
+            border: 1px solid #343841;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #cbd5e1;
+            transition: all 0.3s ease;
+            height: 46px;
+            box-sizing: border-box;
+            white-space: nowrap;
+        }
+
+        .multi-checkbox-wrap:hover:not(.disabled) {
+            border-color: #fb7185;
+            color: #fff;
+            box-shadow: 0 0 8px rgba(255, 0, 85, 0.3);
+        }
+
+        .multi-checkbox-wrap.disabled {
+            opacity: 0.25;
+            cursor: not-allowed;
+            border-color: rgba(255,255,255,0.1);
+            color: #555;
+        }
+
+        .multi-checkbox-wrap input[type="checkbox"] {
+            accent-color: #fb7185;
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            margin: 0;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            margin-bottom: 6px;
+            letter-spacing: 1px;
+            font-weight: bold;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            background: #1a1d23;
+            border: 1px solid #3b4049;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 0.95rem;
+            box-sizing: border-box;
+            outline: none;
+            transition: all 0.3s ease;
+            height: 46px;
+        }
+
+        select:focus {
+            box-shadow: 0 0 0 2px rgba(148,163,184,.18);
+            background: #20242b;
+        }
+
+        /* 軸馬選択（レスポンシブなグリッド配置） */
+        .jiku-container {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 6px;
+            margin-top: 5px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .jiku-btn {
+            background: transparent;
+            border: 1px solid #3b4049;
+            border-radius: 6px;
+            color: #cbd5e1;
+            padding: 10px 0;
+            font-size: 0.95rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .jiku-btn:hover {
+            border-color: #cbd5e1;
+            color: #fff;
+            background: #23272f;
+        }
+
+        .jiku-btn.selected {
+            background: #e11d48;
+            border-color: #fb7185;
+            color: #fff;
+            box-shadow: 0 0 0 2px rgba(225,29,72,.18);
+        }
+
+        .jiku-btn:disabled {
+            opacity: 0.2;
+            cursor: not-allowed;
+            border-color: rgba(255,255,255,0.1);
+        }
+
+        /* 抽選ボタン */
+        .action-area {
+            text-align: center;
+            margin: 25px 0 5px 0;
+        }
+
+        #lottery-button {
+            padding: 14px 0;
+            font-size: 1.3rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #e11d48 0%, #881337 100%);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 6px 18px rgba(0,0,0,.3);
+            letter-spacing: 2px;
+            transition: all 0.2s ease;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        #lottery-button:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,.4);
+            transform: scale(1.01);
+        }
+
+        #lottery-button:disabled {
+            background: #222;
+            box-shadow: none;
+            transform: none;
+            cursor: not-allowed;
+            color: #555;
+            border: 1px solid #333;
+        }
+
+        /* モバイル向け最適化ブレイクポイント */
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+                margin: 8px;
+                border-radius: 12px;
+            }
+            h1 {
+                font-size: 1.5rem;
+                margin-bottom: 15px;
+            }
+            .jiku-container {
+                grid-template-columns: repeat(5, 1fr); /* スマホで見やすい5列配置 */
+                gap: 5px;
+            }
+            .ticket-row {
+                flex-direction: row; /* 横並びを維持しつつ潰れないように調整 */
+                align-items: center;
+            }
+            .num-badge {
+                width: 36px;
+                height: 36px;
+                font-size: 1.1rem;
+            }
+            .result-display {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .jiku-container {
+                grid-template-columns: repeat(4, 1fr); /* 極端に画面が狭いスマホ向け */
+            }
+        }
+
+        /* iPhone / small-screen compact layout */
+        html, body { min-height: 100%; }
+        body { min-height: 100dvh; align-items: flex-start; }
+        .container { max-width: 560px; }
+        @media (max-width: 480px), (max-height: 800px) {
+            body { min-height: 100dvh; }
+            .container { margin: 4px; padding: 10px 12px; border-radius: 10px; }
+            h1 { font-size: 1.25rem; margin-bottom: 8px; letter-spacing: 1px; }
+            .result-card { padding: 8px; margin-bottom: 9px; min-height: 72px; }
+            .result-title { font-size: .68rem; margin-bottom: 4px; }
+            .result-display { font-size: 1.15rem; }
+            .bet-count-display { margin-top: 4px; font-size: .72rem; }
+            .form-group { margin-bottom: 8px; }
+            label { font-size: .72rem; margin-bottom: 3px; }
+            select, .multi-checkbox-wrap { height: 36px; }
+            select { padding: 5px 8px; font-size: .82rem; }
+            .multi-checkbox-wrap { padding: 0 8px; font-size: .78rem; }
+            .jiku-container { grid-template-columns: repeat(9, 1fr); gap: 4px; }
+            .jiku-btn { padding: 6px 0; font-size: .78rem; border-radius: 5px; min-height: 30px; }
+            .action-area { margin: 9px 0 0; }
+            #lottery-button { padding: 10px 0; font-size: 1rem; }
+            .num-badge { width: 30px; height: 30px; font-size: .9rem; }
+            .result-numbers { gap: 5px; margin-top: 5px; }
+        }
+        @media (max-width: 360px) {
+            .jiku-container { grid-template-columns: repeat(6, 1fr); }
+        }
+
+
+        /* Header / information buttons */
+        .topbar { position: relative; padding-top: 30px; }
+        .top-actions { position: absolute; top: 0; right: 0; display: flex; gap: 6px; z-index: 2; }
+        .info-btn { appearance: none; border: 1px solid #3b4049; background: #1a1d23; color: #e5e7eb; border-radius: 999px; padding: 6px 10px; font-size: .72rem; font-weight: 700; cursor: pointer; }
+        .info-btn.accent { border-color: #7f1d1d; background: #241417; color: #fecaca; }
+        .info-btn:active { transform: scale(.97); }
+
+        /* Modal */
+        .modal-backdrop { display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,.76); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); padding: max(14px, env(safe-area-inset-top)) 14px max(14px, env(safe-area-inset-bottom)); box-sizing: border-box; align-items: center; justify-content: center; }
+        .modal-backdrop.open { display: flex; }
+        .modal-card { width: min(100%, 480px); max-height: 82dvh; overflow-y: auto; position: relative; border: 1px solid #3b4049; border-radius: 18px; padding: 22px 18px 20px; box-sizing: border-box; background: #12151b; box-shadow: 0 24px 70px rgba(0,0,0,.55); }
+        .modal-close { position: absolute; right: 12px; top: 10px; width: 34px; height: 34px; border-radius: 50%; border: 1px solid #454b55; background: rgba(10,12,16,.85); color: #fff; font-size: 1.25rem; cursor: pointer; z-index: 4; }
+        .modal-card h2 { margin: 2px 38px 16px 0; font-size: 1.25rem; color: #fff; }
+        .modal-card h3 { margin: 18px 0 6px; font-size: .95rem; color: #fda4af; }
+        .modal-card p, .modal-card li { color: #d1d5db; font-size: .9rem; line-height: 1.75; }
+        .modal-card ol { padding-left: 1.35rem; margin-bottom: 0; }
+        .modal-note { margin-top: 16px; padding: 10px 12px; border-left: 3px solid #e11d48; background: rgba(225,29,72,.08); border-radius: 4px; color: #f3f4f6; font-size: .82rem; line-height: 1.6; }
+
+        /* Omikuji / shrine themed app-description modal */
+        .fortune-card { overflow-x: hidden; overflow-y: auto; background: linear-gradient(180deg,#171315 0%,#101318 60%,#0d1015 100%); border-color: #5b3030; }
+        .fortune-card::before { content: '⛩'; position: absolute; font-size: 12rem; line-height: 1; left: 50%; top: 48%; transform: translate(-50%,-50%); opacity: .045; filter: grayscale(1); pointer-events: none; }
+        .fortune-card::after { content: '御籤'; position: absolute; right: 16px; bottom: 4px; font-family: serif; font-size: 4.5rem; font-weight: 900; writing-mode: vertical-rl; color: #fff; opacity: .025; pointer-events: none; }
+        .fortune-content { position: relative; z-index: 2; text-align: center; }
+        .fortune-symbol { font-size: 2.7rem; margin: 4px 0 2px; filter: drop-shadow(0 0 12px rgba(225,29,72,.25)); }
+        .fortune-title { font-family: serif; letter-spacing: .18em; color: #fecaca !important; margin-right: 0 !important; }
+        .fortune-lead { font-family: serif; font-size: clamp(.80rem, 3.15vw, .94rem) !important; color: #f9fafb !important; line-height: 1.65 !important; text-wrap: pretty; overflow-wrap: anywhere; }
+        .fortune-rule { height: 1px; border: 0; background: linear-gradient(90deg,transparent,#7f1d1d,transparent); margin: 18px 0; }
+        .fortune-emphasis { color: #fb7185; font-weight: 800; }
+        .fortune-small { font-size: .78rem !important; color: #9ca3af !important; margin-bottom: 0; }
+
+        @media (max-width: 480px), (max-height: 800px) {
+            .topbar { padding-top: 27px; }
+            .top-actions { gap: 4px; }
+            .info-btn { padding: 5px 8px; font-size: .66rem; }
+            .topbar h1 { margin-top: 0; }
+            .modal-card { max-height: 88dvh; padding: 18px 15px 16px; }
+            .modal-card p, .modal-card li { font-size: .84rem; line-height: 1.65; }
+            .fortune-card::before { font-size: 9rem; }
+            .fortune-card { max-height: calc(100dvh - max(20px, env(safe-area-inset-top)) - max(20px, env(safe-area-inset-bottom))); padding: 14px 14px 18px; }
+            .fortune-symbol { font-size: 2.15rem; margin-top: 0; }
+            .fortune-title { font-size: 1.05rem !important; letter-spacing: .11em; margin-bottom: 10px !important; }
+            .fortune-lead { margin: 8px 0; }
+            .fortune-content > p:not(.fortune-lead):not(.fortune-small) { font-size: .80rem; line-height: 1.58; margin: 9px 0; }
+            .fortune-rule { margin: 11px 0; }
+            .fortune-small { font-size: .68rem !important; line-height: 1.45 !important; padding-bottom: max(4px, env(safe-area-inset-bottom)); }
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="topbar">
+        <div class="top-actions">
+            <button class="info-btn" type="button" data-modal="usage-modal">使い方</button>
+            <button class="info-btn accent" type="button" data-modal="about-modal">アプリ説明</button>
+        </div>
+        <h1>🔥ZINMAKU CHOICE🔥</h1>
+    </div>
+
+    <div class="result-card">
+        <div class="result-title" id="result-status">SYSTEM READY</div>
+        <div class="result-display" id="result-output">条件を設定してください</div>
+        <div class="bet-count-display" id="bet-count-output"></div>
+    </div>
+
+    <div class="form-group">
+        <label for="horse-count">MAX頭数設定 (SELECT HORSES)</label>
+        <select id="horse-count">
+            </select>
+    </div>
+
+    <div class="form-group">
+        <label for="ticket-type">券種 (TICKET TYPE)</label>
+        <div class="ticket-row">
+            <div class="ticket-select-wrap">
+                <select id="ticket-type">
+                    <option value="uren" data-jiku="1" data-multi="false">馬連 / ワイド (軸1頭)</option>
+                    <option value="utan" data-jiku="1" data-multi="true">馬単 (軸1頭ながし)</option>
+                    <option value="trio1" data-jiku="1" data-multi="false">3連複 (軸1頭ながし)</option>
+                    <option value="trio2" data-jiku="2" data-multi="false">3連複 (軸2頭ながし★)</option>
+                    <option value="tan1" data-jiku="1" data-multi="true">3連単 (軸1頭 1着固定)</option>
+                    <option value="tan2" data-jiku="2" data-multi="true">3連単 (軸2頭 1,2着固定★)</option>
+                </select>
+            </div>
+            <label class="multi-checkbox-wrap" id="multi-wrap">
+                <input type="checkbox" id="multi-checkbox">
+                <span>マルチ</span>
+            </label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="draw-count">ランダム抽選する頭数（紐数）</label>
+        <select id="draw-count">
+            </select>
+    </div>
+
+    <div class="form-group">
+        <label id="jiku-label">軸馬選択</label>
+        <div class="jiku-container" id="jiku-buttons-box">
+            </div>
+    </div>
+
+    <div class="action-area">
+        <button id="lottery-button" disabled>GENERATE ODDS</button>
+    </div>
+</div>
+
+
+<div class="modal-backdrop" id="usage-modal" role="dialog" aria-modal="true" aria-labelledby="usage-title">
+    <div class="modal-card">
+        <button class="modal-close" type="button" aria-label="閉じる">×</button>
+        <h2 id="usage-title">使い方</h2>
+        <ol>
+            <li><strong>出走頭数</strong>を設定します。</li>
+            <li><strong>券種</strong>を選びます。馬単・3連単では必要に応じて「マルチ」をONにできます。</li>
+            <li><strong>ランダム抽選する頭数（紐数）</strong>を決めます。</li>
+            <li>自分が最も信頼する<strong>軸馬</strong>を選択します。券種によって軸1頭・軸2頭を選びます。</li>
+            <li><strong>GENERATE ODDS</strong>を押すと、軸馬以外から紐馬をランダム抽選します。</li>
+        </ol>
+        <div class="modal-note">赤い丸＝あなたが選んだ軸馬 ／ 白い丸＝ランダムで選ばれた紐馬。表示される購入点数も参考にしてください。</div>
+    </div>
+</div>
+
+<div class="modal-backdrop" id="about-modal" role="dialog" aria-modal="true" aria-labelledby="about-title">
+    <div class="modal-card fortune-card">
+        <button class="modal-close" type="button" aria-label="閉じる">×</button>
+        <div class="fortune-content">
+            <div class="fortune-symbol">⛩️</div>
+            <h2 class="fortune-title" id="about-title">ZINMAKU CHOICE 御籤</h2>
+            <p class="fortune-lead"><strong>ZINMAKU</strong>――それは、<span class="fortune-emphasis">「人生捲る」</span>の略。</p>
+            <p class="fortune-lead">一度の選択、一度の勝負が、流れを大きく変えることがある。</p>
+            <p class="fortune-lead">予想の核心は、運に任せない。</p>
+            <p class="fortune-lead"><span class="fortune-emphasis">命を賭けられるほど信じる軸馬</span>を、まず自分の意思で決める。</p>
+            <hr class="fortune-rule">
+            <p>そこから先の紐選びは、考えすぎるほど迷いが生まれるもの。<br>ZINMAKU CHOICEは、あなたが選んだ軸だけを絶対の中心に据え、残された馬たちの中から<strong>“今日の縁”</strong>をランダムに引き寄せます。</p>
+            <p>軸は信念。<br>紐は運試し。<br>最後のひと押しを、競馬のおみくじに委ねる。</p>
+            <hr class="fortune-rule">
+            <p class="fortune-small">※抽選結果はランダムです。的中や利益を保証するものではありません。</p>
+            <p class="fortune-small">馬券は無理のない範囲でお楽しみください。</p>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    // Information modals
+    document.querySelectorAll('[data-modal]').forEach(button => {
+        button.addEventListener('click', () => {
+            const modal = document.getElementById(button.dataset.modal);
+            if (modal) modal.classList.add('open');
+        });
+    });
+    document.querySelectorAll('.modal-backdrop').forEach(modal => {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal || e.target.closest('.modal-close')) modal.classList.remove('open');
+        });
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') document.querySelectorAll('.modal-backdrop.open').forEach(m => m.classList.remove('open'));
+    });
+
+    const horseCountSelect = document.getElementById('horse-count');
+    const ticketTypeSelect = document.getElementById('ticket-type');
+    const drawCountSelect = document.getElementById('draw-count');
+    const multiCheckbox = document.getElementById('multi-checkbox');
+    const multiWrap = document.getElementById('multi-wrap');
+    const jikuButtonsBox = document.getElementById('jiku-buttons-box');
+    const jikuLabel = document.getElementById('jiku-label');
+    const lotteryButton = document.getElementById('lottery-button');
+    const resultStatus = document.getElementById('result-status');
+    const resultOutput = document.getElementById('result-output');
+    const betCountOutput = document.getElementById('bet-count-output');
+
+    let selectedJiku = [];
+
+    function initHorseCountSelect() {
+        horseCountSelect.innerHTML = '';
+        for (let i = 6; i <= 18; i++) {
+            const opt = document.createElement('option');
+            opt.value = i;
+            opt.textContent = `${i}頭立て`;
+            if (i === 18) opt.selected = true;
+            horseCountSelect.appendChild(opt);
+        }
+    }
+
+    function getRequiredJikuCount() {
+        const selectedOption = ticketTypeSelect.options[ticketTypeSelect.selectedIndex];
+        return parseInt(selectedOption.getAttribute('data-jiku'), 10);
+    }
+
+    function updateMultiCheckboxState() {
+        const selectedOption = ticketTypeSelect.options[ticketTypeSelect.selectedIndex];
+        const isMultiAvail = selectedOption.getAttribute('data-multi') === 'true';
+
+        if (isMultiAvail) {
+            multiWrap.classList.remove('disabled');
+            multiCheckbox.disabled = false;
+        } else {
+            multiWrap.classList.add('disabled');
+            multiCheckbox.disabled = true;
+            multiCheckbox.checked = false;
+        }
+    }
+
+    function updateDrawCountSelect() {
+        const totalHorses = parseInt(horseCountSelect.value, 10);
+        const reqJiku = getRequiredJikuCount();
+        const maxHiyo = totalHorses - reqJiku; 
+
+        const currentValue = parseInt(drawCountSelect.value, 10) || 3;
+
+        drawCountSelect.innerHTML = '';
+        for (let i = 1; i <= maxHiyo; i++) {
+            const opt = document.createElement('option');
+            opt.value = i;
+            opt.textContent = i === maxHiyo ? `${i}頭（残り全頭）` : `${i}頭`;
+            if (i === currentValue || (i === 3 && !currentValue)) opt.selected = true;
+            if (currentValue > maxHiyo && i === maxHiyo) opt.selected = true;
+            drawCountSelect.appendChild(opt);
+        }
+    }
+
+    function generateHorseButtons() {
+        jikuButtonsBox.innerHTML = '';
+        selectedJiku = [];
+        const totalHorses = parseInt(horseCountSelect.value, 10);
+        
+        for (let i = 1; i <= totalHorses; i++) {
+            const btn = document.createElement('button');
+            btn.className = 'jiku-btn';
+            btn.textContent = i;
+            btn.addEventListener('click', () => toggleJiku(i, btn));
+            jikuButtonsBox.appendChild(btn);
+        }
+        updateDrawCountSelect();
+        updateRuleUI();
+    }
+
+    function updateRuleUI() {
+        const reqJiku = getRequiredJikuCount();
+        jikuLabel.textContent = `軸馬選択 (※設定: 【${reqJiku}頭】選択)`;
+
+        if (selectedJiku.length > reqJiku) {
+            selectedJiku = [];
+            document.querySelectorAll('.jiku-btn').forEach(b => b.classList.remove('selected'));
+        }
+        updateMultiCheckboxState();
+        checkReady();
+    }
+
+    function toggleJiku(horseNum, buttonElement) {
+        const reqJiku = getRequiredJikuCount();
+        
+        if (selectedJiku.includes(horseNum)) {
+            selectedJiku = selectedJiku.filter(num => num !== horseNum);
+            buttonElement.classList.remove('selected');
+        } else {
+            if (selectedJiku.length < reqJiku) {
+                selectedJiku.push(horseNum);
+                buttonElement.classList.add('selected');
+            } else if (reqJiku === 1) {
+                document.querySelectorAll('.jiku-btn').forEach(b => b.classList.remove('selected'));
+                selectedJiku = [horseNum];
+                buttonElement.classList.add('selected');
+            }
+        }
+        checkReady();
+    }
+
+    function nCr(n, r) {
+        if (r < 0 || r > n) return 0;
+        if (r === 0 || r === n) return 1;
+        if (r > n / 2) r = n - r;
+        let num = 1, den = 1;
+        for (let i = 1; i <= r; i++) {
+            num *= (n - i + 1);
+            den *= i;
+        }
+        return num / den;
+    }
+
+    function calculateBetCount(hiyoCount) {
+        const ticketType = ticketTypeSelect.value;
+        const reqJiku = getRequiredJikuCount();
+        const isMulti = multiCheckbox.checked;
+
+        if (selectedJiku.length !== reqJiku) return 0;
+
+        switch (ticketType) {
+            case 'uren': return hiyoCount; 
+            case 'utan': return isMulti ? (hiyoCount * 2) : hiyoCount; 
+            case 'trio1': return nCr(hiyoCount, 2);
+            case 'trio2': return hiyoCount;
+            case 'tan1': return isMulti ? (nCr(hiyoCount, 2) * 6) : (hiyoCount * (hiyoCount - 1));
+            case 'tan2': return isMulti ? (hiyoCount * 6) : hiyoCount;
+            default: return 0;
+        }
+    }
+
+    function checkReady() {
+        const reqJiku = getRequiredJikuCount();
+        if (selectedJiku.length === reqJiku) {
+            lotteryButton.disabled = false;
+            resultOutput.textContent = "READY TO SHUFFLE";
+            
+            const currentDrawCount = parseInt(drawCountSelect.value, 10);
+            const dots = calculateBetCount(currentDrawCount);
+            const multiText = multiCheckbox.checked ? " [マルチ] " : "";
+            betCountOutput.textContent = `[ 計算買い目:${multiText} ${dots} 点 ]`;
+        } else {
+            lotteryButton.disabled = true;
+            resultOutput.textContent = `軸馬をあと ${reqJiku - selectedJiku.length} 頭選択`;
+            betCountOutput.textContent = '';
+        }
+    }
+
+    lotteryButton.addEventListener('click', () => {
+        lotteryButton.disabled = true;
+        horseCountSelect.disabled = true;
+        ticketTypeSelect.disabled = true;
+        drawCountSelect.disabled = true;
+        multiCheckbox.disabled = true;
+        document.querySelectorAll('.jiku-btn').forEach(b => b.disabled = true);
+
+        const totalHorses = parseInt(horseCountSelect.value, 10);
+        const drawCount = parseInt(drawCountSelect.value, 10); 
+        
+        let pool = [];
+        for (let i = 1; i <= totalHorses; i++) {
+            if (!selectedJiku.includes(i)) {
+                pool.push(i);
+            }
+        }
+
+        let shuffleCount = 0;
+        resultStatus.textContent = "SHUFFLING POOL...";
+        resultStatus.style.color = "#ff0055";
+
+        const interval = setInterval(() => {
+            let dummyHiyo = [...pool].sort(() => Math.random() - 0.5).slice(0, drawCount);
+            displayResults(selectedJiku, dummyHiyo, false);
+            
+            shuffleCount++;
+            if (shuffleCount > 15) { 
+                clearInterval(interval);
+                
+                let finalHiyo = [...pool].sort(() => Math.random() - 0.5).slice(0, drawCount);
+                finalHiyo.sort((a, b) => a - b); 
+
+                displayResults(selectedJiku, finalHiyo, true);
+                
+                resultStatus.textContent = "GENERATION COMPLETE";
+                resultStatus.style.color = "#39ff14";
+                
+                lotteryButton.disabled = false;
+                horseCountSelect.disabled = false;
+                ticketTypeSelect.disabled = false;
+                drawCountSelect.disabled = false;
+                updateMultiCheckboxState();
+                document.querySelectorAll('.jiku-btn').forEach(b => b.disabled = false);
+            }
+        }, 80);
+    });
+
+    function displayResults(jikuArr, hiyoArr, isFinal) {
+        resultOutput.innerHTML = '';
+        const wrapper = document.createElement('div');
+        wrapper.className = 'result-numbers';
+
+        if (jikuArr.length === 2) {
+            const badge1 = document.createElement('div');
+            badge1.className = 'num-badge jiku';
+            badge1.textContent = jikuArr[0];
+            wrapper.appendChild(badge1);
+
+            const hyphen = document.createElement('div');
+            hyphen.className = 'jiku-separator';
+            hyphen.textContent = '-';
+            wrapper.appendChild(hyphen);
+
+            const badge2 = document.createElement('div');
+            badge2.className = 'num-badge jiku';
+            badge2.textContent = jikuArr[1];
+            wrapper.appendChild(badge2);
+        } else {
+            jikuArr.forEach(num => {
+                const badge = document.createElement('div');
+                badge.className = 'num-badge jiku';
+                badge.textContent = num;
+                wrapper.appendChild(badge);
+            });
+        }
+
+        const arrow = document.createElement('div');
+        arrow.className = 'arrow';
+        arrow.textContent = '➔';
+        wrapper.appendChild(arrow);
+
+        hiyoArr.forEach(num => {
+            const badge = document.createElement('div');
+            badge.className = 'num-badge hiyo';
+            if (!isFinal) badge.style.opacity = "0.6"; 
+            badge.textContent = num;
+            wrapper.appendChild(badge);
+        });
+
+        resultOutput.appendChild(wrapper);
+
+        const finalBets = calculateBetCount(hiyoArr.length);
+        const multiLabel = multiCheckbox.checked ? "（マルチ）" : "";
+        betCountOutput.textContent = `購入点数: ${finalBets} 点 ${multiLabel}`;
+    }
+
+    horseCountSelect.addEventListener('change', () => {
+        generateHorseButtons();
+    });
+    ticketTypeSelect.addEventListener('change', () => {
+        updateDrawCountSelect();
+        updateRuleUI();
+    });
+    drawCountSelect.addEventListener('change', checkReady);
+    multiCheckbox.addEventListener('change', checkReady);
+
+    initHorseCountSelect();
+    generateHorseButtons();
+</script>
+
+</body>
+</html>
